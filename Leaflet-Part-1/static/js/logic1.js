@@ -69,12 +69,6 @@ d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/
 
 
 
-
-
-
-
-
-
 // Use d3 to read the JSON file.
 d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson').then(function(data) {
   console.log(data);
@@ -96,9 +90,11 @@ d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
     });
 
     // Add a popup to the marker with some information
-    var popupContent = `<p><strong>Magnitude:</strong> ${feature.properties.mag}</p>
-                        <p><strong>Location:</strong> ${feature.properties.place}</p>
+    var popupContent = `<p><strong>Magnitude:</strong> ${magnitude}</p>
+                        <p><strong>Depth:</strong> ${depth}</p>
+                        <p><strong>Location:</strong> ${feature.properties.place}  (${latitude}, ${longitude})</p>
                         <p><strong>Time:</strong> ${new Date(feature.properties.time)}</p>`;
+                        
     marker.bindPopup(popupContent);
     
     // Add the marker to the map
