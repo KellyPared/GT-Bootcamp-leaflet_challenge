@@ -6,10 +6,10 @@ const height = 500;
 // Creating our initial map object:
 // We set the longitude, latitude, and starting zoom level.
 // This gets inserted into the div with an id of "map".
-const myMap = L.map("map").setView([0, 0], 3);
+const myMap = L.map("map").setView([33, -115], 5);
 
 // Adjusting the center of the map to the "Ring of Fire"
-myMap.panTo(new L.LatLng(0, -150));
+// myMap.panTo(new L.LatLng(0, -150));
 
 //topographical map
 // L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
@@ -44,11 +44,35 @@ function getColor(depth) {
     return "#FF0000"; // red for intermediate depth
   } else if (depth < 50) {
     return "#800080"; // purple for moderate depth
-
+  } else if (depth < 100) {
+      return "#0000FF"; // blue for moderate depth
+  
   } else {
     return "#0000FF"; // blue for deep depth
   }
 }
+
+// Add the fault line layer to the map
+d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json").then(function(data) {
+  const faultLines = L.geoJSON(data, {
+    style: function(feature) {
+      return {
+        color: "black",
+        weight: 1
+      };
+    }
+  });
+
+  faultLines.addTo(myMap);
+});
+
+
+
+
+
+
+
+
 
 
 // Use d3 to read the JSON file.
@@ -87,9 +111,10 @@ d3.json('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
 //create legend
 const legend = L.control({ position: "bottomright" });
 
+//add legend to map- function 
 legend.onAdd = function(map) {
   const div = L.DomUtil.create("div", "legend");
-  const labels = ["0-2", "2-5", "5-10", "10-30", "30-50", "50+"];
+  const labels = ["0-5", "5-10", "10-30", "30-50", "50-100", "100+"];
   const colors = ["#00FF00", "#FFFF00", "#FFF500", "#FF0000", "#800080", "#0000FF"];
   
   // loop through our density intervals and generate a label with a colored square for each interval
